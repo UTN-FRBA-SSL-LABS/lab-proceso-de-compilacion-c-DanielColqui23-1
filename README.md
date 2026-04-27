@@ -974,13 +974,13 @@ nm programa | grep area_circulo
 **P13.** Enlazá con `gcc programa.o matematica.o -o programa`.
 Ejecutá `nm programa | grep "area_circulo"` y copiá la salida.
 
-> **R:**
+> **R:** 00000000000012ec T area_circulo
 
 ¿Con qué letra aparece ahora `area_circulo` en el ejecutable final?
 Escribí solo la letra:
 
 <!-- Completá con la letra exacta que muestra nm: -->
-TIPO_AREA_ENLAZADO=
+TIPO_AREA_ENLAZADO=T
 
 ---
 
@@ -996,17 +996,19 @@ Quedan algunos `U` incluso en el ejecutable final. ¿Por qué? Son funciones de 
 
 **P14.** Ejecutá `nm programa | grep "^ *U"` y copiá la salida.
 
-> **R:**
+> **R:** U __libc_start_main@GLIBC_2.34
+                 U printf@GLIBC_2.2.5
+                 U puts@GLIBC_2.2.5
 
 ¿Quedan símbolos de tipo `U` en el ejecutable final?
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-SIMBOLOS_U_FINAL=
+SIMBOLOS_U_FINAL=SI
 
 ¿Por qué quedan? ¿Quién los resuelve y cuándo?
 
-> **R:**
+> **R:** Quedan porque el programa usa enlazado dinamico. Quien resuelve esto es el cargador dinamico y lo hace en tiempo de ejecucion
 
 ---
 
@@ -1020,12 +1022,27 @@ SIMBOLOS_U_FINAL=
 
 **P15.** Ejecutá `./programa` y copiá la salida completa.
 
-> **R:**
+> **R:**  CUADRADO(5)      = 25
+MAX(7, 12)        = 12
+----------------------------------------
+area_circulo(5.0) = 78.5398
+Factoriales:
+  0! = 1
+  1! = 1
+  2! = 2
+  3! = 6
+  4! = 24
+  5! = 120
+----------------------------------------
+Llamadas a sumar(): 1
+
+
+
 
 ¿Qué valor da `factorial(5)`? Escribí solo el número:
 
 <!-- Completá con el número exacto: -->
-FACTORIAL_5=
+FACTORIAL_5=120
 
 ---
 
@@ -1037,25 +1054,25 @@ FACTORIAL_5=
 como `CUADRADO(x)` y una **función real** como `sumar(a, b)`.
 ¿En qué etapa "desaparece" cada una? ¿Cuál tiene verificación de tipos?
 
-> **R:**
+> **R:** una macro es un simple reemplazo de texto antes que el compilador entienda el codigo y la funcion real es un bloque de codigo con direccion de memoria propia. La macro desaparece en el preprocesamiento y la funcion real desaparece en el Ensamblado
 
 ---
 
 **P17.** ¿Qué diferencia hay entre un símbolo de tipo `T` y uno de tipo `D`
 en la salida de `nm`? ¿En qué sección del archivo objeto vive cada uno?
 
-> **R:**
+> **R:** El tipo tipo T representa codigo ejecutable y el tipo D representan a variables globales con valor inicial asignado. El tipo T viven en la seccion .text y el tipo D viven en la seccion .data
 
 ---
 
 **P18.** (Bonus) Ejecutá `otool -L programa` (macOS) o `ldd programa` (Linux)
 y copiá la salida.
 
-> **R:**
+> **R:** soy windows :v
 
 ¿Por qué `libc` no hubo que especificarla explícitamente al enlazar con `gcc`?
 
-> **R:**
+> **R:** Porque gcc actua como controlador
 
 ---
 
@@ -1064,7 +1081,7 @@ y copiá la salida.
 ### ¿Qué es Clang?
 
 **Clang** es un compilador de C/C++ de código abierto, desarrollado como parte del proyecto **LLVM**. Es el compilador por defecto en macOS (lo instala Xcode Command Line Tools) y compite directamente con GCC en Linux.
-
+m
 Desde el punto de vista del usuario, Clang y GCC son intercambiables: aceptan los mismos flags (`-E`, `-S`, `-c`, `-Wall`, `-DNOMBRE`, etc.) y producen ejecutables equivalentes. La diferencia está en la arquitectura interna: Clang está diseñado con una separación más clara entre fases y expone su funcionamiento interno a través de flags especiales (`-Xclang`), lo que lo hace especialmente útil para estudiar el proceso de compilación.
 
 **LLVM** (Low Level Virtual Machine) es la infraestructura de compilación sobre la que Clang se construye. GCC y Clang son los *frontends* (analizan C y producen una representación intermedia); LLVM es el *backend* (optimiza y genera código de máquina).
