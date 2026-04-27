@@ -1072,7 +1072,7 @@ y copiá la salida.
 
 ¿Por qué `libc` no hubo que especificarla explícitamente al enlazar con `gcc`?
 
-> **R:** Porque gcc actua como controlador
+> **R:** Porque gcc actua como controlador 
 
 ---
 
